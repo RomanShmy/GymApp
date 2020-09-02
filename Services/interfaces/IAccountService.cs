@@ -4,6 +4,6 @@ namespace GymApp.Services.interfaces
 {
     public interface IAccountService
     {
-        Account GetAccount();
+        Account GetAccount(long id);
     }
 }
