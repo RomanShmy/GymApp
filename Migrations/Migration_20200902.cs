@@ -13,11 +13,11 @@ namespace GymApp.Migrations
 
         public override void Up()
         {
-            Create.Table("Account")
+            Create.Table("Account").InSchema("gym")
                 .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Amount").AsDecimal();
                 
-            Create.Table("Transactions")
+            Create.Table("Transactions").InSchema("gym")
                 .WithColumn("Id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("Amount").AsDecimal()
                 .WithColumn("Descriptions").AsString().NotNullable()
