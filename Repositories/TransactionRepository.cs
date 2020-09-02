@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
+
 using Dapper.Contrib.Extensions;
+using GymApp.Models;
 using Npgsql;
 
 namespace GymApp
@@ -14,6 +15,7 @@ namespace GymApp
         {
             this.connectionString = connectionString;
         }
+
 
         public List<Transaction> GetTransactions()
         {
