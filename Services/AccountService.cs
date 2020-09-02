@@ -21,14 +21,13 @@ namespace GymApp.Services
             {
                 return null;
             }
-
-            var transactions = transactionRepository.GetTransactions().Where(transaction => transaction.AccountId == account.Id).ToList();
-            account.Balance = transactions.Sum(transaction => transaction.Amount);
-
+            
+            account.Amount = transactionRepository.GetTransactions().Where(transaction => transaction.Account_Id == account.Id).Sum(transaction => transaction.Amount);
+            
             return account; 
         }
 
-        public Account ReplenishmentBalance(int accountId, Transaction transaction)
+        public Account ReplenishmentBalance(long accountId, Transaction transaction)
         {
             transactionRepository.AddTransaction(accountId, transaction);
             return GetAccount(accountId);

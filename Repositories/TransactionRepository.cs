@@ -19,13 +19,13 @@ namespace GymApp
 
         public Transaction AddTransaction(long accountId, Transaction transaction)
         {
-            string query = "insert into public.transactions (amount, descriptions, date, accountId) values(@Amount, @Descriptions, @Date, @AccountId) return id;";
+            string query = "insert into public.transactions (amount, descriptions, date, account_id) values(@Amount, @Descriptions, @Date, @AccountId) returning id;";
             using (var connection = new NpgsqlConnection(connectionString.Value))
             {
                 var id = connection.QueryFirst<int>(query, new {Amount = transaction.Amount, 
-                                                                                  Description = transaction.Description,
-                                                                                  Date = DateTime.Now,
-                                                                                  AccountId = accountId});
+                                                                Descriptions = transaction.Description,
+                                                                Date = DateTime.Now,
+                                                                AccountId = accountId});
                 transaction.Id = id;
                 return transaction;
             }
