@@ -10,8 +10,7 @@ namespace GymApp.Migrations
         {
             using var scope = app.ApplicationServices.CreateScope();
             var runner = scope.ServiceProvider.GetService<IMigrationRunner>();
-            runner.ListMigrations();
-            runner.MigrateUp(20200902);
+            runner.MigrateUp();
             return app;
         }
     }

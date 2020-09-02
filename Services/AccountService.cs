@@ -21,7 +21,9 @@ namespace GymApp.Services
             {
                 return null;
             }
+
             account.Transactions.AddRange(transactionRepository.GetTransactions().Where(transaction => transaction.AccountId == account.Id));
+            account.Balance = account.Transactions.Sum(transaction => transaction.Amount);
             
             return account; 
         }

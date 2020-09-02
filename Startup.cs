@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FluentMigrator.Runner;
 using GymApp.Migrations;
+using GymApp.Services.interfaces;
+using GymApp.Services;
+using System.Reflection;
 
 namespace GymApp
 {
@@ -28,11 +31,13 @@ namespace GymApp
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
+            services.AddScoped<IAccountService, AccountService>();
+
             services.AddFluentMigratorCore()
                     .ConfigureRunner( builder => 
                         builder.AddPostgres()
                         .WithGlobalConnectionString(connectionString.Value)
-                        .ScanIn(typeof(object).Assembly).For.Migrations()
+                        .ScanIn(Assembly.GetExecutingAssembly()).For.All()
 
                     );
         }
@@ -45,7 +50,7 @@ namespace GymApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
