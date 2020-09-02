@@ -14,12 +14,12 @@ namespace GymApp
             this.connectionString = connectionString;
         }
 
-        public Account GetAccount()
+        public Account GetAccount(long id)
         {
-            string query = "select * from public.account where id = 1;";
+            string query = "select * from public.account where id = @Id;";
             using (var connection = new NpgsqlConnection(connectionString.Value))
             {
-                var account = connection.QueryFirst<Account>(query);
+                var account = connection.QueryFirst<Account>(query, new {Id = id});
                 return account;
             }
         }

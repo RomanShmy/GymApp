@@ -6,6 +6,5 @@ namespace GymApp.Models
     {
         public long Id { get; set; }
         public decimal Balance { get; set; }
-        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }

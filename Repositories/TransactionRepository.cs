@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
@@ -16,6 +17,19 @@ namespace GymApp
             this.connectionString = connectionString;
         }
 
+        public Transaction AddTransaction(long accountId, Transaction transaction)
+        {
+            string query = "insert into public.transactions (amount, descriptions, date, accountId) values(@Amount, @Descriptions, @Date, @AccountId) return id;";
+            using (var connection = new NpgsqlConnection(connectionString.Value))
+            {
+                var id = connection.QueryFirst<int>(query, new {Amount = transaction.Amount, 
+                                                                                  Description = transaction.Description,
+                                                                                  Date = DateTime.Now,
+                                                                                  AccountId = accountId});
+                transaction.Id = id;
+                return transaction;
+            }
+        }
 
         public List<Transaction> GetTransactions()
         {   
