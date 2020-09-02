@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using FluentMigrator.Runner;
+using GymApp.Migrations;
+using GymApp.Services.interfaces;
+using GymApp.Services;
+using System.Reflection;
 
 namespace GymApp
 {
@@ -26,6 +24,22 @@ namespace GymApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            var connectionString = new ConnectionString(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddSingleton(connectionString);
+
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+
+            services.AddScoped<IAccountService, AccountService>();
+
+            services.AddFluentMigratorCore()
+                    .ConfigureRunner( builder => 
+                        builder.AddPostgres()
+                        .WithGlobalConnectionString(connectionString.Value)
+                        .ScanIn(Assembly.GetExecutingAssembly()).For.All()
+
+                    );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +50,7 @@ namespace GymApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -46,6 +60,8 @@ namespace GymApp
             {
                 endpoints.MapControllers();
             });
+
+            app.Migrate();
         }
     }
 }
