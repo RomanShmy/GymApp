@@ -23,5 +23,13 @@ namespace GymApp.Services
 
             return sub;
         }
+
+        public Subscription GetSubscription(long id)
+        {
+            var subscription = subscriptionRepository.GetSubscription(id);
+            subscription.Account = accountRepository.GetAccountBySubscriptionId(id);
+
+            return subscription;
+        }
     }
 }
