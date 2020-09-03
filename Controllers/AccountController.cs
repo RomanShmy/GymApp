@@ -38,5 +38,16 @@ namespace GymApp.Controllers
             return Ok(account);
         }
 
+        [HttpPost("{id}/withdrawal")]
+        public ActionResult<Account> WithdrawalBalance(long id, Transaction transaction)
+        {
+            var account = service.WithdrawalBalance(id, transaction);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return Ok(account);
+        }
+
     }
 }
