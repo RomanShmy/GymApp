@@ -17,12 +17,26 @@ namespace GymApp
             this.db = db;
         }
 
-        public Transaction AddTransaction(long accountId, Transaction transaction)
+        public Transaction AddTransactionReplenish(long accountId, Transaction transaction)
         {
             string query = "insert into public.transactions (amount, descriptions, date, account_id) values(@Amount, @Descriptions, @Date, @AccountId) returning id;";
             using (var connection = db.GetConnection())
             {
                 var id = connection.QueryFirst<int>(query, new {Amount = transaction.Amount, 
+                                                                Descriptions = transaction.Description,
+                                                                Date = DateTime.Now,
+                                                                AccountId = accountId});
+                transaction.Id = id;
+                return transaction;
+            }
+        }
+
+        public Transaction AddTransactionWithdrawal(long accountId, Transaction transaction)
+        {
+            string query = "insert into public.transactions (amount, descriptions, date, account_id) values(@Amount, @Descriptions, @Date, @AccountId) returning id;";
+            using (var connection = db.GetConnection())
+            {
+                var id = connection.QueryFirst<int>(query, new {Amount = -transaction.Amount, 
                                                                 Descriptions = transaction.Description,
                                                                 Date = DateTime.Now,
                                                                 AccountId = accountId});
