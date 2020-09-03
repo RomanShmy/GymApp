@@ -6,5 +6,6 @@ namespace GymApp.Services.interfaces
     {
         Account GetAccount(long id);
         Account ReplenishmentBalance(long accountId, Transaction transaction);
+        Account WithdrawalBalance(long accountId, Transaction transaction);
     }
 }
