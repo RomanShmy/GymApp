@@ -10,17 +10,17 @@ namespace GymApp
 {
     public class TransactionRepository : ITransactionRepository
     {
-        private readonly ConnectionString connectionString;
+        private readonly DataFactory db;
 
-        public TransactionRepository(ConnectionString connectionString)
+        public TransactionRepository(DataFactory db)
         {
-            this.connectionString = connectionString;
+            this.db = db;
         }
 
         public Transaction AddTransaction(long accountId, Transaction transaction)
         {
             string query = "insert into public.transactions (amount, descriptions, date, account_id) values(@Amount, @Descriptions, @Date, @AccountId) returning id;";
-            using (var connection = new NpgsqlConnection(connectionString.Value))
+            using (var connection = db.GetConnection())
             {
                 var id = connection.QueryFirst<int>(query, new {Amount = transaction.Amount, 
                                                                 Descriptions = transaction.Description,
@@ -34,7 +34,7 @@ namespace GymApp
         public List<Transaction> GetTransactions()
         {   
             string query = "select * from public.transactions;";
-            using(var connection = new NpgsqlConnection(connectionString.Value))
+            using(var connection = db.GetConnection())
             {
                 var transactions = connection.Query<Transaction>(query).ToList();
                 return transactions;

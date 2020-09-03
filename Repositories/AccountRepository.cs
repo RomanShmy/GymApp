@@ -7,17 +7,17 @@ namespace GymApp
 {
     public  class AccountRepository : IAccountRepository
     {
-        private readonly ConnectionString connectionString;
+        private readonly DataFactory db;
 
-        public AccountRepository(ConnectionString connectionString)
+        public AccountRepository(DataFactory db)
         {
-            this.connectionString = connectionString;
+            this.db = db;
         }
 
         public Account GetAccount(long id)
         {
             string query = "select * from public.account where id = @Id;";
-            using (var connection = new NpgsqlConnection(connectionString.Value))
+            using (var connection = db.GetConnection())
             {
                 var account = connection.QueryFirst<Account>(query, new {Id = id});
                 return account;
