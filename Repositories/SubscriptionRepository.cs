@@ -1,3 +1,4 @@
+using System;
 using Dapper;
 using GymApp.Models;
 using GymApp.Repositories.interfaces;
@@ -14,12 +15,12 @@ namespace GymApp.Repositories
         }
         public Subscription AddSubscription(Subscription subscription)
         {
-            string query = "insert into public.subscription (type, expiration_date) values(@Type, @ExpirationDate) returning id";
+            string query = "insert into public.subscription (type, expiration_date) values(@Type, @ExpirationDate) returning *";
             using(var connection = db.GetConnection())
             {
-                var id = connection.QueryFirst<long>(query, new {Type = (int)subscription.Type, ExpirationDate = subscription.Expiration_Date});
-                subscription.Id = id;
-                return subscription;
+                var subscriptionResult = connection.QueryFirst<Subscription>(query, new {Type = subscription.Type, ExpirationDate = DateTime.Now.AddYears(1).Date});
+                
+                return subscriptionResult;
             }
         }
     }

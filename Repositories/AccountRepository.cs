@@ -14,6 +14,16 @@ namespace GymApp
             this.db = db;
         }
 
+        public Account CreateAccount(long subscriptionId)
+        {
+            string query = "insert into public.account (amount, subscription_id) values(0, @SubscriptionId) returning *";
+            using (var connection = db.GetConnection())
+            {
+                var account = connection.QueryFirst<Account>(query, new {SubscriptionId = subscriptionId});
+                return account;
+            }
+        }
+        
         public Account GetAccount(long id)
         {
             string query = "select * from public.account where id = @Id;";
@@ -23,5 +33,7 @@ namespace GymApp
                 return account;
             }
         }
+
+        
     }
 }

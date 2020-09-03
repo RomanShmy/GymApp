@@ -16,7 +16,7 @@ namespace GymApp.Migrations
             Create.Table("subscription")
                 .WithColumn("id").AsInt64().NotNullable().PrimaryKey().Identity()
                 .WithColumn("type").AsInt32()
-                .WithColumn("expiration_date").AsDateTime();
+                .WithColumn("expiration_date").AsDate();
 
             Alter.Table("account").AddColumn("subscription_id").AsInt64().ForeignKey("subscription", "id").Nullable();
         }
