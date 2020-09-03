@@ -23,5 +23,16 @@ namespace GymApp.Repositories
                 return subscriptionResult;
             }
         }
+
+        public Subscription GetSubscription(long id)
+        {
+            string query = "select * from public.subscription where id = @Id;";
+            using(var connection = db.GetConnection())
+            {
+                var subscriptionResult = connection.QueryFirst<Subscription>(query, new {Id = id});
+                
+                return subscriptionResult;
+            }
+        }
     }
 }
