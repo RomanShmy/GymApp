@@ -5,7 +5,7 @@ namespace GymApp.Repositories.interfaces
 {
     public interface ICheckAccessRepository
     {
-        List<ResultHistory> GetHistory();
+        List<ResultHistory> GetHistory(long subscriptionId);
         ResultHistory AddResult(ResultHistory resultHistory);
     }
 }

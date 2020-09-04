@@ -16,21 +16,21 @@ namespace GymApp.Repositories
 
         public ResultHistory AddResult(ResultHistory resultHistory)
         {
-            string query = "insert into public.result_history (subscription_id, access, message, date) values(@SubscriptionId, @Access, @Message, @Date) returning id";
+            string query = "insert into public.result_history (subscription_id, access, message, date) values(@SubscriptionId, @Access, @Message, @Date) returning *";
             using (var connection = db.GetConnection())
             {
-                var id = connection.QueryFirst<int>(query, new {SubscriptionId = resultHistory.Subscription.Id, Access = resultHistory.Access, Message = resultHistory.Message, Date = DateTime.Now});
-                resultHistory.Id = id;
+                var result = connection.QueryFirst<ResultHistory>(query, new {SubscriptionId = resultHistory.Subscription.Id, Access = resultHistory.Access, Message = resultHistory.Message, Date = DateTime.Now});
+                return result;
             }
-            return resultHistory;
+            
         }
 
-        public List<ResultHistory> GetHistory()
+        public List<ResultHistory> GetHistory(long subscriptionId)
         {
-            string query = "select * from public.result_history";
+            string query = "select * from public.result_history where subscription_id = @Id";
             using (var connection = db.GetConnection())
             {
-                var history = connection.Query<ResultHistory>(query).AsList();
+                var history = connection.Query<ResultHistory>(query, new {Id = subscriptionId}).AsList();
                 return history;
             }
         }
