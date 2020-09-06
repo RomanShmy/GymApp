@@ -38,6 +38,7 @@ namespace GymApp
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ICheckAccessRepository, CheckAccessRepository>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
