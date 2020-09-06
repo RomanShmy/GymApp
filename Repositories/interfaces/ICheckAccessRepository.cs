@@ -7,5 +7,6 @@ namespace GymApp.Repositories.interfaces
     {
         List<ResultHistory> GetHistory(long subscriptionId);
         ResultHistory AddResult(ResultHistory resultHistory);
+        List<ResultHistory> GetAllHistory();
     }
 }

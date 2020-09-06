@@ -16,10 +16,14 @@ namespace GymApp.Repositories
 
         public ResultHistory AddResult(ResultHistory resultHistory)
         {
-            string query = "insert into public.result_history (subscription_id, access, message, date) values(@SubscriptionId, @Access, @Message, @Date) returning *";
+            string query = "insert into public.result_history (subscription_id, access, message, date, service_id) values(@SubscriptionId, @Access, @Message, @Date, @ServiceId) returning *";
             using (var connection = db.GetConnection())
             {
-                var result = connection.QueryFirst<ResultHistory>(query, new {SubscriptionId = resultHistory.Subscription.Id, Access = resultHistory.Access, Message = resultHistory.Message, Date = DateTime.Now});
+                var result = connection.QueryFirst<ResultHistory>(query, new {SubscriptionId = resultHistory.Subscription.Id, 
+                                                                                               Access = resultHistory.Access, 
+                                                                                               Message = resultHistory.Message, 
+                                                                                               Date = DateTime.Now,
+                                                                                               ServiceId = resultHistory.Service_Id});
                 return result;
             }
             
@@ -31,6 +35,17 @@ namespace GymApp.Repositories
             using (var connection = db.GetConnection())
             {
                 var history = connection.Query<ResultHistory>(query, new {Id = subscriptionId}).AsList();
+                return history;
+            }
+        }
+
+        public List<ResultHistory> GetAllHistory()
+        {
+            string query = "select * from public.result_history";
+            using (var connection = db.GetConnection())
+            {
+                var history = connection.Query<ResultHistory>(query).AsList();
+                
                 return history;
             }
         }
