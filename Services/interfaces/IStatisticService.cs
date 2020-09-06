@@ -8,5 +8,7 @@ namespace GymApp.Services.interfaces
     {
        List<CountByType> GetByType(); 
        List<CountByType> GetByTypeWithDate(DateTime from, DateTime to);
+       List<QuantityTimeOfVisit> GetQuantityTimeOfVisitAdditianalService();
+       List<QuantityTimeOfVisit> GetQuantityTimeOfVisitAdditianalService(DateTime from, DateTime to);
     }
 }

@@ -78,12 +78,14 @@ namespace GymApp.Services
                 result.Access = Access.OK;
                 result.Message = $"Withdrawal {transaction.Description}";
                 result.Subscription = subscription;
+                result.Service_Id = services.First(service => service.Name.Equals(SWIMMING_POOL)).Id;
             }
             else 
             {
                 result.Access = Access.OK;
                 result.Message = "Inclusive in subscription";
                 result.Subscription = subscription;
+                result.Service_Id = services.First(service => service.Name.Equals(SWIMMING_POOL)).Id;
             }
             checkRepository.AddResult(result);
 
@@ -111,12 +113,14 @@ namespace GymApp.Services
                 result.Access = Access.OK;
                 result.Message = $"Withdrawal {transaction.Description}";
                 result.Subscription = subscription;
+                result.Service_Id = services.First(service => service.Name.Equals(SPA)).Id;
             }
             else 
             {
                 result.Access = Access.OK;
                 result.Message = "Inclusive in subscription";
                 result.Subscription = subscription;
+                result.Service_Id = services.First(service => service.Name.Equals(SPA)).Id;
             }
 
             checkRepository.AddResult(result);
