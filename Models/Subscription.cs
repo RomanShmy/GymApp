@@ -11,6 +11,7 @@ namespace GymApp.Models
         public List<Service> Services { get; set; } = new List<Service>();
         public Coverage Coverage { get; set; }
         public TypeSubscription Type { get; set; }
+        public DateTime Register_Date {get; set;}
         public DateTime Expiration_Date { get; set; }
 
     }
