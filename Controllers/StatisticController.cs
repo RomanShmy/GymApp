@@ -17,16 +17,28 @@ namespace GymApp.Controllers
             this.statisticService = statisticService;
         }
 
-        [HttpGet("now")]
+        [HttpGet("type/now")]
         public ActionResult<List<CountByType>> GetStatisticByType()
         {
             return Ok(statisticService.GetByType());
         }
 
-        [HttpGet]
+        [HttpGet("type/date")]
         public ActionResult<List<CountByType>> GetStatisticByTypeWithDate(DateTime from, DateTime to)
         {
             return Ok(statisticService.GetByTypeWithDate(from, to));
+        }
+
+        [HttpGet("visits")]
+        public ActionResult<List<CountByType>> GetStatisticByVisitService()
+        {
+            return Ok(statisticService.GetQuantityTimeOfVisitAdditianalService());
+        }
+
+        [HttpGet("visits/date")]
+        public ActionResult<List<CountByType>> GetStatisticByVisitService(DateTime from, DateTime to)
+        {
+            return Ok(statisticService.GetQuantityTimeOfVisitAdditianalService(from, to));
         }
     }
 }
