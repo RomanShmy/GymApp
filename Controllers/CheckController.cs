@@ -28,9 +28,23 @@ namespace GymApp.Controllers
         }
 
         [HttpPost("{subscriptionId}")]
-        public ActionResult<ResultHistory> AddrResult(long subscriptionId)
+        public ActionResult<ResultHistory> AddResult(long subscriptionId)
         {
             var result = checkService.PostResult(subscriptionId);
+            return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
+        }
+
+        [HttpPost("{subscriptionId}/swimming")]
+        public ActionResult<ResultHistory> AddResultSwimmingPool(long subscriptionId)
+        {
+            var result = checkService.PostResultSwimmingPool(subscriptionId);
+            return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
+        }
+
+        [HttpPost("{subscriptionId}/spa")]
+        public ActionResult<ResultHistory> AddResultSpa(long subscriptionId)
+        {
+            var result = checkService.PostResultSpa(subscriptionId);
             return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
         }
     }
