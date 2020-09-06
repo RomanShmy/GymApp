@@ -43,6 +43,7 @@ namespace GymApp
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<ICheckAccessService, CheckAccessService>();
+            services.AddScoped<IStatisticService, StatisticService>();
 
             services.AddFluentMigratorCore()
                     .ConfigureRunner( builder => 
