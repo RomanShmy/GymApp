@@ -23,10 +23,10 @@ namespace GymApp.Migrations
                 .WithColumn("amount").AsDecimal()
                 .WithColumn("descriptions").AsString().NotNullable()
                 .WithColumn("date").AsDateTime()
-                .WithColumn("accountId").AsInt64().ForeignKey("account", "id");
+                .WithColumn("account_id").AsInt64().ForeignKey("account", "id");
 
             Insert.IntoTable("account").Row(new { amount = 0 });
-            Insert.IntoTable("transactions").Row(new {amount = 23, descriptions = "replenishment", date = DateTime.Now, accountId = 1});
+            Insert.IntoTable("transactions").Row(new {amount = 23, descriptions = "replenishment", date = DateTime.Now, account_id = 1});
         }
     }
 }

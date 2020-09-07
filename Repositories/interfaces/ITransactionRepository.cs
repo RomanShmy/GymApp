@@ -7,5 +7,6 @@ namespace GymApp
     public interface ITransactionRepository
     {
         List<Transaction> GetTransactions();
+        Transaction AddTransaction(long accountId, Transaction transaction);
     }
 }

@@ -15,10 +15,10 @@ namespace GymApp.Controllers
             this.service = service;
         }
 
-        [HttpGet]
-        public ActionResult<Account> GetAccount()
+        [HttpGet("{id}/balance")]
+        public ActionResult<Account> GetAccount(long id)
         {
-            var account = service.GetAccount();
+            var account = service.GetAccount(id);
             if (account == null)
             {
                 return NotFound();
@@ -26,5 +26,17 @@ namespace GymApp.Controllers
 
             return Ok(account);
         }
+
+        [HttpPost("{id}/replenishment")]
+        public ActionResult<Account> ReplenishmentBalance(long id, Transaction transaction)
+        {
+            var account = service.ReplenishmentBalance(id, transaction);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return Ok(account);
+        }
+
     }
 }

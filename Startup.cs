@@ -26,7 +26,7 @@ namespace GymApp
             services.AddControllers();
 
             var connectionString = new ConnectionString(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddSingleton(connectionString);
+            services.AddSingleton(new DataFactory(connectionString.Value));
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();

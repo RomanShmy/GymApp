@@ -4,6 +4,7 @@ namespace GymApp
 {
     public interface IAccountRepository
     {
-        Account GetAccount();
+        Account GetAccount(long id);
+        
     }
 }
