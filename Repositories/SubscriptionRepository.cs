@@ -29,9 +29,11 @@ namespace GymApp.Repositories
         {
             string query = "insert into public.subscription (type, coverage, expiration_date, register_date) values(@Type, @Coverage,@ExpirationDate,@RegisterDate) returning *";
             using(var connection = db.GetConnection())
-            {//DAte by count month
-                var subscriptionResult = connection.QueryFirst<Subscription>(query, new {Type = subscription.Type, Coverage = subscription.Coverage ,ExpirationDate = DateTime.Now.AddYears(1).Date, RegisterDate = DateTime.Now});
-                
+            {
+                var subscriptionResult = connection.QueryFirst<Subscription>(query, new {Type = subscription.Type,
+                                                                                         Coverage = subscription.Coverage, 
+                                                                                         ExpirationDate = DateTime.Now.AddMonths(subscription.CountMonth).Date,
+                                                                                         RegisterDate = DateTime.Now});
                 return subscriptionResult;
             }
         }

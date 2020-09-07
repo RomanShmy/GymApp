@@ -28,7 +28,7 @@ namespace GymApp.Services
             this.serviceRepository = serviceRepository;
         }
 
-        public ResultHistory PostResult(long subscriptionId)
+        public ResultHistory CheckBalanceExpirationDateAndLogEntry(long subscriptionId)
         {
             var subscription = subscriptionService.GetSubscription(subscriptionId);
             ResultHistory result = new ResultHistory();
@@ -57,12 +57,13 @@ namespace GymApp.Services
             return result;
         }
 
-        public ResultHistory PostResultService(long subscriptionId, string serviceName)
+        public ResultHistory CheckInclusiveServiceAndLogEntry(long subscriptionId, string serviceName)
         {
+            serviceName = serviceName.ToUpper();
             var subscription = subscriptionService.GetSubscription(subscriptionId);
             if (!IsAlowedAcccess(subscription))
             {
-                return PostResult(subscription.Id);
+                return CheckBalanceExpirationDateAndLogEntry(subscription.Id);
             }
             
             ResultHistory result = new ResultHistory();

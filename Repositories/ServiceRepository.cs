@@ -23,12 +23,12 @@ namespace GymApp.Repositories
                 return service;
             }
         }
-        public Service GetService(long id)
+        public Service GetService(string serviceName)
         {
-            string query = "select * from public.services where id = @Id";
+            string query = "select * from public.services where name = @ServiceName";
             using(var connection = db.GetConnection())
             {
-                var service = connection.QueryFirst<Service>(query, new {Id = id});
+                var service = connection.QueryFirst<Service>(query, new {ServiceName = serviceName});
                 return service;
             }
         }

@@ -12,13 +12,16 @@ namespace GymApp.Services
         private ISubscriptionRepository subscriptionRepository;
         private ICheckAccessRepository checkRepository;
         private IServiceRepository serviceRepository;
+        private IStatisticRepository statisticRepository;
         public StatisticService(ISubscriptionRepository subscriptionRepository, 
                                 ICheckAccessRepository checkRepository,
-                                IServiceRepository serviceRepository)
+                                IServiceRepository serviceRepository,
+                                IStatisticRepository statisticRepository)
         {
             this.subscriptionRepository = subscriptionRepository;
             this.checkRepository = checkRepository;
             this.serviceRepository = serviceRepository;
+            this.statisticRepository = statisticRepository;
         }
         public List<CountByType> GetByType()
         {
@@ -89,75 +92,14 @@ namespace GymApp.Services
         }
         public List<QuantityTimeOfVisit> GetQuantityTimeOfVisitAdditianalService(DateTime from, DateTime to)
         {
-
-
-            var history = checkRepository.GetAllHistory();
-            var services = serviceRepository.GetServices();
-            List<QuantityTimeOfVisit> visits = new List<QuantityTimeOfVisit>();
-            Dictionary<Service, int> serviceCounts = new Dictionary<Service, int>();
-            foreach (var service in services)
-            {
-                foreach (var hist in history)
-                {
-                    if (serviceCounts.ContainsKey(service))
-                    {
-
-                        if (hist.Access == Access.OK && hist.Service_Id == service.Id && from < hist.Date && hist.Date < to)
-                        {
-                            serviceCounts[service] += 1; 
-                        }
-                    }
-                    else
-                    {        
-                        serviceCounts.Add(service, 0);  
-                    }
-                }
-            }
-
-            for (int i = 0; i < serviceCounts.Count; i++)
-            {
-                QuantityTimeOfVisit visit = new QuantityTimeOfVisit();
-                visit.ServiceName = serviceCounts.ElementAt(i).Key.Name;
-                visit.Count = serviceCounts.ElementAt(i).Value;
-                visits.Add(visit);
-            }
-
+            var visits = statisticRepository.GetStatisticByServiceDate(from, to);
             return visits;
         }
 
         public List<QuantityTimeOfVisit> GetQuantityTimeOfVisitAdditianalService()
         {
-            var history = checkRepository.GetAllHistory();
-            var services = serviceRepository.GetServices();
-            List<QuantityTimeOfVisit> visits = new List<QuantityTimeOfVisit>();
-            Dictionary<Service, int> serviceCounts = new Dictionary<Service, int>();
-            foreach (var service in services)
-            {
-                foreach (var hist in history)
-                {
-                    if (serviceCounts.ContainsKey(service))
-                    {
-
-                        if (hist.Access == Access.OK && hist.Service_Id == service.Id)
-                        {
-                            serviceCounts[service] += 1; 
-                        }
-                    }
-                    else
-                    {        
-                        serviceCounts.Add(service, 0);  
-                    }
-                }
-            }
-
-            for (int i = 0; i < serviceCounts.Count; i++) // зробити через запит до бащи даных
-            {
-                QuantityTimeOfVisit visit = new QuantityTimeOfVisit();
-                visit.ServiceName = serviceCounts.ElementAt(i).Key.Name;
-                visit.Count = serviceCounts.ElementAt(i).Value;
-                visits.Add(visit);
-            }
-
+            
+            var visits = statisticRepository.GetStatisticByService();
             return visits;
         }
     }

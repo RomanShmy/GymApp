@@ -29,31 +29,31 @@ namespace GymApp.Services
         {
             var sub = subscriptionRepository.AddSubscription(subscription);
             sub.Account = accountRepository.CreateAccount(sub.Id);
-            
+            sub.Services = CheckSubscription(sub).ToList();
 
             return sub;
         }
 
-        private IEnumerable<Service> CheckSubscription(Subscription subscription)//брать не по Id
+        private IEnumerable<Service> CheckSubscription(Subscription subscription)
         {
             List<Service> services = new List<Service>();
-            if((int)subscription.Type != 0)//enum
+            if(subscription.Type != TypeSubscription.NONE)
             {
-               Service service = serviceRepository.GetService(1);
+               Service service = serviceRepository.GetService("GYM");
                service.Price = 0;
                services.Add(service);
             }
-            if ((int)subscription.Type == 2)
+            if (subscription.Type == TypeSubscription.CLASSIC_PLUS)
             {
-                Service service = serviceRepository.GetService(2);
+                Service service = serviceRepository.GetService("SWIMMING_POOL");
                 service.Price = 0;
                 services.Add(service);
             }
-            if((int)subscription.Type == 3)
+            if(subscription.Type == TypeSubscription.PREMIUM)
             {
-                Service service1 = serviceRepository.GetService(2);
+                Service service1 = serviceRepository.GetService("SWIMMING_POOL");
                 service1.Price = 0;
-                Service service2 = serviceRepository.GetService(3);
+                Service service2 = serviceRepository.GetService("SPA");
                 service2.Price = 0;
                 services.Add(service1);
                 services.Add(service2);

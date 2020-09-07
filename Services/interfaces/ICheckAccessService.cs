@@ -5,8 +5,8 @@ namespace GymApp.Services.interfaces
 {
     public interface ICheckAccessService
     {
-        ResultHistory PostResult(long subscriptionId);
+        ResultHistory CheckBalanceExpirationDateAndLogEntry(long subscriptionId);
         List<ResultHistory> GetHistory(long subscriptionId);
-        ResultHistory PostResultService(long subscriptionId, string serviceName);
+        ResultHistory CheckInclusiveServiceAndLogEntry(long subscriptionId, string serviceName);
     }
 }
