@@ -21,7 +21,7 @@ namespace GymApp.Services
             {
                 return null;
             }
-            
+
             account.Amount = transactionRepository.GetTransactions().Where(transaction => transaction.Account_Id == account.Id).Sum(transaction => transaction.Amount);
             
             return account; 
@@ -29,7 +29,13 @@ namespace GymApp.Services
 
         public Account ReplenishmentBalance(long accountId, Transaction transaction)
         {
-            transactionRepository.AddTransaction(accountId, transaction);
+            transactionRepository.AddTransactionReplenish(accountId, transaction);
+            return GetAccount(accountId);
+        }
+
+        public Account WithdrawalBalance(long accountId, Transaction transaction)
+        {
+            transactionRepository.AddTransactionWithdrawal(accountId, transaction);
             return GetAccount(accountId);
         }
     }
