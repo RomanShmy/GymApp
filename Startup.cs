@@ -37,9 +37,11 @@ namespace GymApp
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<ICheckAccessRepository, CheckAccessRepository>();
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<ICheckAccessService, CheckAccessService>();
 
             services.AddFluentMigratorCore()
                     .ConfigureRunner( builder => 
