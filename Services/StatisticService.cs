@@ -150,7 +150,7 @@ namespace GymApp.Services
                 }
             }
 
-            for (int i = 0; i < serviceCounts.Count; i++)
+            for (int i = 0; i < serviceCounts.Count; i++) // зробити через запит до бащи даных
             {
                 QuantityTimeOfVisit visit = new QuantityTimeOfVisit();
                 visit.ServiceName = serviceCounts.ElementAt(i).Key.Name;

@@ -34,10 +34,10 @@ namespace GymApp.Services
             return sub;
         }
 
-        private IEnumerable<Service> CheckSubscription(Subscription subscription)
+        private IEnumerable<Service> CheckSubscription(Subscription subscription)//брать не по Id
         {
             List<Service> services = new List<Service>();
-            if((int)subscription.Type != 0)
+            if((int)subscription.Type != 0)//enum
             {
                Service service = serviceRepository.GetService(1);
                service.Price = 0;

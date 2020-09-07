@@ -30,7 +30,7 @@ namespace GymApp.Controllers
         [HttpPost("{subscriptionId}")]
         public ActionResult<ResultHistory> AddResult(long subscriptionId)
         {
-            var result = checkService.PostResult(subscriptionId);
+            var result = checkService.PostResult(subscriptionId);//checkbalance and log entry
             return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
         }
 
@@ -47,7 +47,7 @@ namespace GymApp.Controllers
         public ActionResult<ResultHistory> AddResultSpa(long subscriptionId)
         {
             const string SPA = "SPA";
-            var result = checkService.PostResultService(subscriptionId, SPA);
+            var result = checkService.PostResultService(subscriptionId, SPA);//entry service
             return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
         }
 
