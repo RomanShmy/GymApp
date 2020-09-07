@@ -8,6 +8,6 @@ namespace GymApp.Models
         public Subscription Subscription { get; set; }
         public Access Access { get; set; }
         public string Message { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

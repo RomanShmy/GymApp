@@ -7,5 +7,7 @@ namespace GymApp.Services.interfaces
     {
         ResultHistory PostResult(long subscriptionId);
         List<ResultHistory> GetHistory(long subscriptionId);
+        ResultHistory PostResultSwimmingPool(long subscriptionId);
+        ResultHistory PostResultSpa(long subscriptionId);
     }
 }

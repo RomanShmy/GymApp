@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System;
 using GymApp.Models;
@@ -10,10 +11,21 @@ namespace GymApp.Services
     {
         private ICheckAccessRepository checkRepository;
         private ISubscriptionService subscriptionService;
-        public CheckAccessService(ICheckAccessRepository checkRepository, ISubscriptionService subscriptionService)
+        private ITransactionRepository transactionRepository;
+        private IServiceRepository serviceRepository;
+        const string GYM = "GYM";
+        const string SWIMMING_POOL = "SWIMMING_POOL";
+        const string SPA = "SPA";
+
+        public CheckAccessService(ICheckAccessRepository checkRepository, 
+                                  ISubscriptionService subscriptionService, 
+                                  ITransactionRepository transactionRepository,
+                                  IServiceRepository serviceRepository)
         {
             this.checkRepository = checkRepository;
             this.subscriptionService = subscriptionService;
+            this.transactionRepository = transactionRepository;
+            this.serviceRepository = serviceRepository;
         }
 
         public ResultHistory PostResult(long subscriptionId)
@@ -23,7 +35,7 @@ namespace GymApp.Services
             result.Subscription = subscription;
             result.Access = Access.NoAccess;
             result.Message = "No access, ";
-            if (IsPositiveBalance(subscription) && IsExpirateSubscription(subscription))
+            if (IsAlowedAcccess(subscription))
             {
                 result.Access = Access.OK;
                 result.Message = "Access is allowed";
@@ -45,6 +57,73 @@ namespace GymApp.Services
             return result;
         }
 
+        public ResultHistory PostResultSwimmingPool(long subscriptionId)
+        {
+            var subscription = subscriptionService.GetSubscription(subscriptionId);
+            if (!IsAlowedAcccess(subscription))
+            {
+                return PostResult(subscription.Id);
+            }
+            
+            ResultHistory result = new ResultHistory();
+            Transaction transaction = new Transaction();
+            var services = serviceRepository.GetServices();
+            bool IsContainService = subscription.Services.Exists(service => service.Name.Equals(SWIMMING_POOL));
+            if(!IsContainService)
+            {
+                transaction.Description = SWIMMING_POOL;
+                transaction.Amount = services.First(service => service.Name.Equals(SWIMMING_POOL)).Price;
+                transactionRepository.AddTransactionWithdrawal(subscription.Account.Id, transaction);
+                subscription = subscriptionService.GetSubscription(subscription.Id);
+                result.Access = Access.OK;
+                result.Message = $"Withdrawal {transaction.Description}";
+                result.Subscription = subscription;
+            }
+            else 
+            {
+                result.Access = Access.OK;
+                result.Message = "Inclusive in subscription";
+                result.Subscription = subscription;
+            }
+            checkRepository.AddResult(result);
+
+            return result;
+        }
+
+        public ResultHistory PostResultSpa(long subscriptionId)
+        {
+            var subscription = subscriptionService.GetSubscription(subscriptionId);
+            if (!IsAlowedAcccess(subscription))
+            {
+                return PostResult(subscription.Id);
+            }
+            
+            ResultHistory result = new ResultHistory();
+            Transaction transaction = new Transaction();
+            var services = serviceRepository.GetServices();
+            bool IsContainService = subscription.Services.Exists(service => service.Name.Equals(SPA));
+            if(!IsContainService)
+            {
+                transaction.Description = SPA;
+                transaction.Amount = services.First(service => service.Name.Equals(SPA)).Price;
+                transactionRepository.AddTransactionWithdrawal(subscription.Account.Id, transaction);
+                subscription = subscriptionService.GetSubscription(subscription.Id);
+                result.Access = Access.OK;
+                result.Message = $"Withdrawal {transaction.Description}";
+                result.Subscription = subscription;
+            }
+            else 
+            {
+                result.Access = Access.OK;
+                result.Message = "Inclusive in subscription";
+                result.Subscription = subscription;
+            }
+
+            checkRepository.AddResult(result);
+
+            return result;
+        }
+
         public List<ResultHistory> GetHistory(long subscriptionId)
         {
             var history = checkRepository.GetHistory(subscriptionId);
@@ -52,6 +131,10 @@ namespace GymApp.Services
             return history;
         }
 
+        private bool IsAlowedAcccess(Subscription subscription)
+        {
+            return IsPositiveBalance(subscription) && IsExpirateSubscription(subscription);
+        }
         private bool IsPositiveBalance(Subscription subscription)
         {
             return subscription.Account.Amount >= 0;
