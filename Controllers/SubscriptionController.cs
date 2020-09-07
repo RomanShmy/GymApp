@@ -15,6 +15,17 @@ namespace GymApp.Controllers
             this.subscriptionService = subscriptionService;
         }  
 
+        [HttpGet("{id}")]
+        public ActionResult<Subscription> GetSubscription(long id)
+        {
+            var subscription = subscriptionService.GetSubscription(id);
+            if(subscription == null)
+            {
+                return NotFound();
+            }
+            return Ok(subscription);
+        }
+
         [HttpPost]
         public ActionResult<Subscription> AddSubscription([FromBody]Subscription subscription)
         {

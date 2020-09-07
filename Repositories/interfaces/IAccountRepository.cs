@@ -6,6 +6,7 @@ namespace GymApp
     {
         Account GetAccount(long id);
         Account CreateAccount(long subscriptionId);
+        Account GetAccountBySubscriptionId(long subscriptionId);
         
     }
 }

@@ -23,13 +23,23 @@ namespace GymApp
                 return account;
             }
         }
-        
+
         public Account GetAccount(long id)
         {
             string query = "select * from public.account where id = @Id;";
             using (var connection = db.GetConnection())
             {
                 var account = connection.QueryFirst<Account>(query, new {Id = id});
+                return account;
+            }
+        }
+
+        public Account GetAccountBySubscriptionId(long subscriptionId)
+        {
+            string query = "select * from public.account where subscription_id = @Id;";
+            using (var connection = db.GetConnection())
+            {
+                var account = connection.QueryFirst<Account>(query, new {Id = subscriptionId});
                 return account;
             }
         }
