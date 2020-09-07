@@ -37,14 +37,25 @@ namespace GymApp.Controllers
         [HttpPost("{subscriptionId}/swimming")]
         public ActionResult<ResultHistory> AddResultSwimmingPool(long subscriptionId)
         {
-            var result = checkService.PostResultSwimmingPool(subscriptionId);
+            string SWIMMING_POOL = "SWIMMING_POOL";
+        
+            var result = checkService.PostResultService(subscriptionId, SWIMMING_POOL);
             return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
         }
 
         [HttpPost("{subscriptionId}/spa")]
         public ActionResult<ResultHistory> AddResultSpa(long subscriptionId)
         {
-            var result = checkService.PostResultSpa(subscriptionId);
+            const string SPA = "SPA";
+            var result = checkService.PostResultService(subscriptionId, SPA);
+            return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
+        }
+
+        [HttpPost("{subscriptionId}/gym")]
+        public ActionResult<ResultHistory> AddResultGym(long subscriptionId)
+        {
+            const string GYM = "GYM";
+            var result = checkService.PostResultService(subscriptionId, GYM);
             return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);
         }
     }

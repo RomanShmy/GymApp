@@ -57,7 +57,7 @@ namespace GymApp.Services
             return result;
         }
 
-        public ResultHistory PostResultSwimmingPool(long subscriptionId)
+        public ResultHistory PostResultService(long subscriptionId, string serviceName)
         {
             var subscription = subscriptionService.GetSubscription(subscriptionId);
             if (!IsAlowedAcccess(subscription))
@@ -68,61 +68,30 @@ namespace GymApp.Services
             ResultHistory result = new ResultHistory();
             Transaction transaction = new Transaction();
             var services = serviceRepository.GetServices();
-            bool IsContainService = subscription.Services.Exists(service => service.Name.Equals(SWIMMING_POOL));
+            bool IsContainService = subscription.Services.Exists(service => service.Name.Equals(serviceName));
             if(!IsContainService)
             {
-                transaction.Description = SWIMMING_POOL;
-                transaction.Amount = services.First(service => service.Name.Equals(SWIMMING_POOL)).Price;
+                transaction.Description = serviceName;
+                transaction.Amount = services.First(service => service.Name.Equals(serviceName)).Price;
                 transactionRepository.AddTransactionWithdrawal(subscription.Account.Id, transaction);
                 subscription = subscriptionService.GetSubscription(subscription.Id);
                 result.Access = Access.OK;
                 result.Message = $"Withdrawal {transaction.Description}";
                 result.Subscription = subscription;
+                result.Service_Id = services.First(service => service.Name.Equals(serviceName)).Id;
             }
             else 
             {
                 result.Access = Access.OK;
                 result.Message = "Inclusive in subscription";
                 result.Subscription = subscription;
+                result.Service_Id = services.First(service => service.Name.Equals(serviceName)).Id;
             }
             checkRepository.AddResult(result);
 
             return result;
         }
 
-        public ResultHistory PostResultSpa(long subscriptionId)
-        {
-            var subscription = subscriptionService.GetSubscription(subscriptionId);
-            if (!IsAlowedAcccess(subscription))
-            {
-                return PostResult(subscription.Id);
-            }
-            
-            ResultHistory result = new ResultHistory();
-            Transaction transaction = new Transaction();
-            var services = serviceRepository.GetServices();
-            bool IsContainService = subscription.Services.Exists(service => service.Name.Equals(SPA));
-            if(!IsContainService)
-            {
-                transaction.Description = SPA;
-                transaction.Amount = services.First(service => service.Name.Equals(SPA)).Price;
-                transactionRepository.AddTransactionWithdrawal(subscription.Account.Id, transaction);
-                subscription = subscriptionService.GetSubscription(subscription.Id);
-                result.Access = Access.OK;
-                result.Message = $"Withdrawal {transaction.Description}";
-                result.Subscription = subscription;
-            }
-            else 
-            {
-                result.Access = Access.OK;
-                result.Message = "Inclusive in subscription";
-                result.Subscription = subscription;
-            }
-
-            checkRepository.AddResult(result);
-
-            return result;
-        }
 
         public List<ResultHistory> GetHistory(long subscriptionId)
         {

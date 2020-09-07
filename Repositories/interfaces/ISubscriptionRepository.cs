@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GymApp.Models;
 
 namespace GymApp.Repositories.interfaces
@@ -6,5 +7,6 @@ namespace GymApp.Repositories.interfaces
     {
         Subscription AddSubscription(Subscription subscription);
         Subscription GetSubscription(long id);
+        List<Subscription> GetSubscriptions();
     }
 }
