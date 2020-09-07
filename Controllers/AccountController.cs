@@ -8,7 +8,7 @@ namespace GymApp.Controllers
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private IAccountService accountService;//account accountService
+        private IAccountService accountService;
         
 
         public AccountController(IAccountService accountService)
