@@ -8,6 +8,9 @@ using GymApp.Migrations;
 using GymApp.Services.interfaces;
 using GymApp.Services;
 using System.Reflection;
+using GymApp.Repositories.interfaces;
+using GymApp.Repositories;
+using System.Text.Json.Serialization;
 
 namespace GymApp
 {
@@ -23,15 +26,20 @@ namespace GymApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opts =>
+            {
+                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             var connectionString = new ConnectionString(Configuration.GetConnectionString("DefaultConnection"));
             services.AddSingleton(new DataFactory(connectionString.Value));
 
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
 
             services.AddFluentMigratorCore()
                     .ConfigureRunner( builder => 

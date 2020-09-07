@@ -6,5 +6,6 @@ namespace GymApp.Models
     {
         public long Id { get; set; }
         public decimal Amount { get; set; }
+        public long Subscription_Id { get; set; }
     }
 }
