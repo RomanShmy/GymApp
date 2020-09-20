@@ -39,21 +39,21 @@ namespace GymApp.Services
             List<Service> services = new List<Service>();
             if(subscription.Type != TypeSubscription.NONE)
             {
-               Service service = serviceRepository.GetService("GYM");
+               Service service = serviceRepository.GetServiceByName("GYM");
                service.Price = 0;
                services.Add(service);
             }
             if (subscription.Type == TypeSubscription.CLASSIC_PLUS)
             {
-                Service service = serviceRepository.GetService("SWIMMING_POOL");
+                Service service = serviceRepository.GetServiceByName("SWIMMING_POOL");
                 service.Price = 0;
                 services.Add(service);
             }
             if(subscription.Type == TypeSubscription.PREMIUM)
             {
-                Service service1 = serviceRepository.GetService("SWIMMING_POOL");
+                Service service1 = serviceRepository.GetServiceByName("SWIMMING_POOL");
                 service1.Price = 0;
-                Service service2 = serviceRepository.GetService("SPA");
+                Service service2 = serviceRepository.GetServiceByName("SPA");
                 service2.Price = 0;
                 services.Add(service1);
                 services.Add(service2);
@@ -72,6 +72,11 @@ namespace GymApp.Services
             subscription.Services.AddRange(CheckSubscription(subscription));
 
             return subscription;
+        }
+
+        public List<Subscription> GetSubscriptions()
+        {
+            return subscriptionRepository.GetSubscriptions();
         }
     }
 }

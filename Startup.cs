@@ -46,6 +46,17 @@ namespace GymApp
             services.AddScoped<ICheckAccessService, CheckAccessService>();
             services.AddScoped<IStatisticService, StatisticService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "MyPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("*")
+                                .WithMethods("POST", "GET", "PATCH", "DELETE")
+                                .AllowAnyHeader();;
+                    });
+            });
+
             services.AddFluentMigratorCore()
                     .ConfigureRunner( builder => 
                         builder.AddPostgres()
@@ -68,7 +79,7 @@ namespace GymApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

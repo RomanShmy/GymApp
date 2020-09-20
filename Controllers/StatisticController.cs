@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using GymApp.Models;
 using GymApp.Services.interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymApp.Controllers
 {
+    [EnableCors("MyPolicy")]
     [ApiController]
     [Route("api/[controller]")]
     public class StatisticController : ControllerBase

@@ -61,12 +61,12 @@ namespace GymApp.Services
         {
             serviceName = serviceName.ToUpper();
             var subscription = subscriptionService.GetSubscription(subscriptionId);
-            if (!IsAlowedAcccess(subscription))
+            if (!IsAlowedAcccess(subscription) && !subscription.Services.Exists(service => service.Name.Equals(serviceName)))
             {
                 return CheckBalanceExpirationDateAndLogEntry(subscription.Id);
             }
             
-            ResultHistory result = new ResultHistory();
+            var result = new ResultHistory();
             Transaction transaction = new Transaction();
             var services = serviceRepository.GetServices();
             bool IsContainService = subscription.Services.Exists(service => service.Name.Equals(serviceName));
@@ -97,6 +97,17 @@ namespace GymApp.Services
         public List<ResultHistory> GetHistory(long subscriptionId)
         {
             var history = checkRepository.GetHistory(subscriptionId);
+            history.ForEach(result => {
+                if(result.Service_Id != 0){
+                    result.Service = serviceRepository.GetServiceById(result.Service_Id);
+                }
+                else
+                {
+                    var service = new Service();
+                    service.Name = "Enter gate";
+                    result.Service = service;
+                }
+            });
             history.ForEach(result => result.Subscription = subscriptionService.GetSubscription(subscriptionId));
             return history;
         }

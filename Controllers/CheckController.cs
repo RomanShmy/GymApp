@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Net;
 using GymApp.Models;
 using GymApp.Services.interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymApp.Controllers
 {
+    [EnableCors("MyPolicy")]
     [ApiController]
     [Route("api/[controller]")]
     public class CheckController : ControllerBase
@@ -35,7 +37,7 @@ namespace GymApp.Controllers
         }
 
         [HttpPost("{subscriptionId}/{service}")]
-        public ActionResult<ResultHistory> AddResultSwimmingPool(long subscriptionId, string service)
+        public ActionResult<ResultHistory> AddResultService(long subscriptionId, string service)
         {
             var result = entryService.CheckInclusiveServiceAndLogEntry(subscriptionId, service);
             return new CreatedResult(HttpContext.Request.Host + HttpContext.Request.Path, result);

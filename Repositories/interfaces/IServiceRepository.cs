@@ -5,7 +5,8 @@ namespace GymApp.Repositories.interfaces
 {
     public interface IServiceRepository
     {
-        Service GetService(string serviceName);
+        Service GetServiceByName(string serviceName);
         List<Service> GetServices();
+         Service GetServiceById(long serviceId);
     }
 }

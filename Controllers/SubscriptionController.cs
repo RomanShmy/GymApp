@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using GymApp.Models;
 using GymApp.Services.interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GymApp.Controllers
 {
+    [EnableCors("MyPolicy")]
     [ApiController]
     [Route("api/[controller]")]
     public class SubscriptionController : ControllerBase
@@ -14,6 +17,10 @@ namespace GymApp.Controllers
         {
             this.subscriptionService = subscriptionService;
         }  
+
+        public ActionResult<List<Subscription>> GetSubscriptions(){
+            return Ok(subscriptionService.GetSubscriptions());
+        }
 
         [HttpGet("{id}")]
         public ActionResult<Subscription> GetSubscription(long id)

@@ -47,6 +47,7 @@ namespace GymApp.Services
                 }
                 CountByType element = new CountByType();
                 element.Type = (TypeSubscription) type;
+                element.Count = types[(TypeSubscription) type];
                 element.Percent = Math.Round(types[(TypeSubscription) type] * 100.0 / count);
                 statistics.Add(element);
 
@@ -84,6 +85,7 @@ namespace GymApp.Services
             {
                 CountByType element = new CountByType();
                 element.Type = types.ElementAt(i).Key;
+                element.Count = types.ElementAt(i).Value;
                 element.Percent = Math.Round(types.ElementAt(i).Value * 100.0 / count);
                 statistics.Add(element);
             }
